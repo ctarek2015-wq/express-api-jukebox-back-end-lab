@@ -1,8 +1,15 @@
 const Track = require("../models/Track");
+const { searchTrack } = require("../services/musicServices");
 
 const create = async (req, res) => {
   try {
     const newTrack = await Track.create(req.body);
+    const musicData = await searchTrack(newTrack.title, newTrack.artist);
+    if (musicData) {
+      newTrack.strTrackThumb = musicData.strTrackThumb;
+      newTrack.strMusicVid = musicData.strMusicVid;
+      await newTrack.save();
+    }
     res.status(201).json(newTrack);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -37,6 +44,12 @@ const update = async (req, res) => {
     });
     if (!track) {
       return res.status(404).json({ error: "Track not found" });
+    }
+    const musicData = await searchTrack(track.title, track.artist);
+    if (musicData) {
+      track.strTrackThumb = musicData.strTrackThumb;
+      track.strMusicVid = musicData.strMusicVid;
+      await track.save();
     }
     res.status(200).json(track);
   } catch (error) {
