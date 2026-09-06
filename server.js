@@ -4,7 +4,7 @@ const cors = require("cors");
 const logger = require("morgan");
 const tracksRouter = require("./routers/tracksRouter");
 require("./database/database");
-
+require("./services/musicServices");
 app.use(cors());
 app.use(express.json());
 app.use(logger("dev"));
