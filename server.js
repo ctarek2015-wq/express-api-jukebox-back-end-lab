@@ -6,6 +6,7 @@ const tracksRouter = require("./routers/tracksRouter");
 require("./database/database");
 
 app.use(cors());
+app.use(express.json());
 app.use(logger("dev"));
 
 app.use("", tracksRouter);
